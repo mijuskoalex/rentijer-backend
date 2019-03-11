@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Početna strana</title>
+    </h:head>
+    <h:body>
+        Forma za logovanje:
+        <h:form>
+            <div class="crveniFont">
+            #{RegistracijaKontroler.poruka}
+            </div>
+            <h:panelGrid columns="2">
+                <h:outputText value="Ime"/>
+                <h:inputText id="ime" value="#{RegistracijaKontroler.ime}"/>
+                <h:outputText value="Prezime:"/>
+                <h:inputText id="prezime" value="#{RegistracijaKontroler.prezime}"/>
+                <h:outputText value="Email:"/>
+                <h:inputText id="email" value="#{RegistracijaKontroler.email}"/>
+                <h:outputText value="Broj telefona"/>
+                <h:inputText id="broj" value="#{RegistracijaKontroler.brojTelefona}"/>
+                <h:outputText value="Lozinka:"/>
+                <h:inputSecret id="lozinka" value="#{RegistracijaKontroler.lozinka}">
+                </h:inputSecret>
+                <h:commandButton value="REGISTRUJ SE"
+                                 action="#{RegistracijaKontroler.registracija()}"/>
+            </h:panelGrid>
+        </h:form>
+    </h:body>
+</html>

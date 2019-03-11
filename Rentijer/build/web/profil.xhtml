@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <head>
+        <title>TODO supply a title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <header>
+        <h:form>
+         <c:if test ="#{ LoginKontroler.korisnik != null }" >
+                Dobrodosli #{LoginKontroler.korisnik.ime}
+                <h:commandButton value="LogOut"
+                                 action="#{LoginKontroler.logout()}"/>
+            </c:if>
+        </h:form>
+        </header>
+        <br/>
+        <h:form>
+            <div class="crveniFont">
+            #{LoginKontroler.poruka}
+            </div>
+            <h:outputText value="Promeni sifru"/>
+            <br/>
+            <h:outputText value="Unesite staru sifru: "/>
+            <h:inputSecret id="lozinka" value="#{LoginKontroler.lozinka}"/>
+            <br/>
+            <h:outputText value="Unesite novu sifru: "/>
+            <h:inputSecret id="lozinka2" value="#{LoginKontroler.lozinka2}"/>
+            <br/>
+            <h:commandButton value="Potvrdi promenu lozinke" action="#{LoginKontroler.promenaLozinke()}"/>
+            <h:form enctype="multipart/form-data"  prependId="false">
+                <h:outputText value="File: "></h:outputText>
+                <h:inputFile value="#{fileupload.uploadedFile}"  />
+                <h:commandButton value="Save" type="submit" action="#{fileupload.saveFile}" style="color: red;"></h:commandButton>
+            </h:form>
+            
+        </h:form>
+        
+    </body>
+</html>

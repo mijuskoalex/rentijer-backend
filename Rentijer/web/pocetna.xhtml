@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!--<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>-->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <head>
+        <title>TODO supply a title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <header>
+            <h:form>
+            <c:if test ="#{ LoginKontroler.korisnik != null }" >
+                <h:outputLink value="profil.xhtml">Profil</h:outputLink>
+                <a href="profil.xhtml"><h:outputText value="Profil"/></a>
+                Dobrodosli #{LoginKontroler.korisnik.ime}
+                <h:commandButton value="LogOut"
+                                 action="#{LoginKontroler.logout()}"/>
+            </c:if>
+            <c:if test ="#{ LoginKontroler.korisnik == null }" >
+                <h:commandButton value="Registrujte se"
+                                 action="registracija"/>
+            </c:if>
+            </h:form>
+        </header>
+        <div>TODO Pocetna content</div>
+    </body>
+</html>
