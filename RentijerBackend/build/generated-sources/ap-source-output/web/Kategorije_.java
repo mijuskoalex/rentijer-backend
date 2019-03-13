@@ -6,7 +6,7 @@ import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 import web.Oglas;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2019-03-09T20:14:23")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2019-03-13T13:58:22")
 @StaticMetamodel(Kategorije.class)
 public class Kategorije_ { 
 
