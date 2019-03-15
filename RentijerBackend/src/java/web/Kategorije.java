@@ -7,6 +7,7 @@ package web;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -33,6 +34,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Kategorije.findAll", query = "SELECT k FROM Kategorije k")
     , @NamedQuery(name = "Kategorije.findById", query = "SELECT k FROM Kategorije k WHERE k.id = :id")
+    , @NamedQuery(name = "Kategorije.AllKats", query = "SELECT k FROM Kategorije k WHERE k.idKat is null and k.idPodKat is null")
+    , @NamedQuery(name = "Kategorije.AllPodKatsForKat", query = "SELECT k FROM Kategorije k WHERE k.idKat = :idKat and k.idPodKat is null")
+    , @NamedQuery(name = "Kategorije.AllPodPodKatsForPodKat", query = "SELECT k FROM Kategorije k WHERE k.idPodKat = :idPodKat")
     , @NamedQuery(name = "Kategorije.findByIdKat", query = "SELECT k FROM Kategorije k WHERE k.idKat = :idKat")
     , @NamedQuery(name = "Kategorije.findByIdPodKat", query = "SELECT k FROM Kategorije k WHERE k.idPodKat = :idPodKat")
     , @NamedQuery(name = "Kategorije.findByNaziv", query = "SELECT k FROM Kategorije k WHERE k.naziv = :naziv")})

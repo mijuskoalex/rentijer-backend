@@ -5,6 +5,9 @@
  */
 package web.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import java.util.Collection;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -75,7 +78,7 @@ public class KategorijeFacadeREST extends AbstractFacade<Kategorije> {
     @GET
     @Path("kategorija/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Oglas> kategirije( @PathParam("id") Integer id) {
+    public List<Oglas> kategorije( @PathParam("id") Integer id) {
         return super.findByKat(id);
     }
     
@@ -86,6 +89,30 @@ public class KategorijeFacadeREST extends AbstractFacade<Kategorije> {
         Oglas k = (Oglas)getEntityManager().createNamedQuery("Oglas.findById").setParameter("id", id).getSingleResult();
         
         return k.getOglasPoljeCollection();
+    }
+    
+    @GET
+    @Path("kategorije")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Kategorije> Kategorije() {      
+        List<Kategorije> kategorije = getEntityManager().createNamedQuery("Kategorije.AllKats").getResultList();       
+        return kategorije;
+    }
+    
+    @GET
+    @Path("PodKategorije/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Kategorije> PodKategorije(@PathParam("id") Integer id) {      
+        List<Kategorije> kategorije = getEntityManager().createNamedQuery("Kategorije.AllPodKatsForKat").setParameter("idKat", id).getResultList();       
+        return kategorije;
+    }
+    
+    @GET
+    @Path("PodPodKategorije/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Kategorije> PododKategorije(@PathParam("id") Integer id) {      
+        List<Kategorije> kategorije = getEntityManager().createNamedQuery("Kategorije.AllPodPodKatsForPodKat").setParameter("idPodKat", id).getResultList();       
+        return kategorije;
     }
     
     @GET
@@ -100,6 +127,56 @@ public class KategorijeFacadeREST extends AbstractFacade<Kategorije> {
     @Produces(MediaType.TEXT_PLAIN)
     public String countREST() {
         return String.valueOf(super.count());
+    }
+    
+    @GET
+    @Path("test")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String Test() throws JsonProcessingException {
+        
+        List<Kategorije> kategorije = getEntityManager().createNamedQuery("Kategorije.AllKats").getResultList();
+        
+        StringBuilder test = new StringBuilder();
+        for (int i = 0 ; i <kategorije.size() ; i++){
+            List<Kategorije> PodKategorije = getEntityManager().createNamedQuery("Kategorije.AllPodKatsForKat").setParameter("idKat", kategorije.get(i).getId()).getResultList();
+            test.append("{");
+            test.append("\"id\":" + kategorije.get(i).getId() + ",");
+            test.append("\"naziv\":\"" +kategorije.get(i).getNaziv() + "\"");
+            test.append(",child:{\n");
+            for(int j = 0; j<PodKategorije.size() ; j++){
+                if(j==0) test.append("  {"); else test.append("{");
+                test.append("\"id\":" + PodKategorije.get(j).getId() + ",");
+                test.append("\"naziv\":\"" +PodKategorije.get(j).getNaziv() + "\"");
+                List<Kategorije> podpodKat = getEntityManager().createNamedQuery("Kategorije.AllPodPodKatsForPodKat").setParameter("idPodKat", PodKategorije.get(j).getId()).getResultList();
+                if(podpodKat.size()!= 0){
+                    test.append(",child:\n");
+                }
+                for(int n=0;n<podpodKat.size();n++){
+                    if(n==0) test.append("      {"); else test.append("{");
+                    test.append("\"id\":" + podpodKat.get(n).getId() + ",");
+                    test.append("\"naziv\":\"" +podpodKat.get(n).getNaziv() + "\"}");
+                    if(n!=podpodKat.size()-1) test.append(","); else test.append("\n");
+                }
+                
+                if(PodKategorije.size()-1==j) test.append("}\n"); else test.append("},");
+            }
+            test.append("}");
+            if(i != kategorije.size() - 1)test.append("},");
+            else test.append("}\n");
+        }
+        
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String json = ow.writeValueAsString(kategorije);
+        
+        return json;
+    }
+    
+    @GET
+    @Path("test2")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String Test2() {
+        
+        return "";
     }
 
     @Override
