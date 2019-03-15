@@ -5,9 +5,12 @@
  */
 package web.service;
 
+import JSONObjects.KategorijeJSON;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import java.util.AbstractList;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -74,47 +77,47 @@ public class KategorijeFacadeREST extends AbstractFacade<Kategorije> {
     public List<Kategorije> findAll() {
         return super.findAll();
     }
-    
+
     @GET
     @Path("kategorija/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Oglas> kategorije( @PathParam("id") Integer id) {
+    public List<Oglas> kategorije(@PathParam("id") Integer id) {
         return super.findByKat(id);
     }
-    
+
     @GET
     @Path("polja/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<OglasPolje> OglasPolje( @PathParam("id") Integer id) {
-        Oglas k = (Oglas)getEntityManager().createNamedQuery("Oglas.findById").setParameter("id", id).getSingleResult();
-        
+    public Collection<OglasPolje> OglasPolje(@PathParam("id") Integer id) {
+        Oglas k = (Oglas) getEntityManager().createNamedQuery("Oglas.findById").setParameter("id", id).getSingleResult();
+
         return k.getOglasPoljeCollection();
     }
-    
+
     @GET
     @Path("kategorije")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Kategorije> Kategorije() {      
-        List<Kategorije> kategorije = getEntityManager().createNamedQuery("Kategorije.AllKats").getResultList();       
+    public List<Kategorije> Kategorije() {
+        List<Kategorije> kategorije = getEntityManager().createNamedQuery("Kategorije.AllKats").getResultList();
         return kategorije;
     }
-    
+
     @GET
     @Path("PodKategorije/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Kategorije> PodKategorije(@PathParam("id") Integer id) {      
-        List<Kategorije> kategorije = getEntityManager().createNamedQuery("Kategorije.AllPodKatsForKat").setParameter("idKat", id).getResultList();       
+    public List<Kategorije> PodKategorije(@PathParam("id") Integer id) {
+        List<Kategorije> kategorije = getEntityManager().createNamedQuery("Kategorije.AllPodKatsForKat").setParameter("idKat", id).getResultList();
         return kategorije;
     }
-    
+
     @GET
     @Path("PodPodKategorije/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Kategorije> PododKategorije(@PathParam("id") Integer id) {      
-        List<Kategorije> kategorije = getEntityManager().createNamedQuery("Kategorije.AllPodPodKatsForPodKat").setParameter("idPodKat", id).getResultList();       
+    public List<Kategorije> PododKategorije(@PathParam("id") Integer id) {
+        List<Kategorije> kategorije = getEntityManager().createNamedQuery("Kategorije.AllPodPodKatsForPodKat").setParameter("idPodKat", id).getResultList();
         return kategorije;
     }
-    
+
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -128,60 +131,54 @@ public class KategorijeFacadeREST extends AbstractFacade<Kategorije> {
     public String countREST() {
         return String.valueOf(super.count());
     }
-    
+
     @GET
-    @Path("test")
+    @Path("all")
     @Produces(MediaType.TEXT_PLAIN)
     public String Test() throws JsonProcessingException {
-        
+
+        List<KategorijeJSON> kategorijeRet = new ArrayList<KategorijeJSON>();
+
         List<Kategorije> kategorije = getEntityManager().createNamedQuery("Kategorije.AllKats").getResultList();
-        
-        StringBuilder test = new StringBuilder();
-        for (int i = 0 ; i <kategorije.size() ; i++){
-            List<Kategorije> PodKategorije = getEntityManager().createNamedQuery("Kategorije.AllPodKatsForKat").setParameter("idKat", kategorije.get(i).getId()).getResultList();
-            test.append("{");
-            test.append("\"id\":" + kategorije.get(i).getId() + ",");
-            test.append("\"naziv\":\"" +kategorije.get(i).getNaziv() + "\"");
-            test.append(",child:{\n");
-            for(int j = 0; j<PodKategorije.size() ; j++){
-                if(j==0) test.append("  {"); else test.append("{");
-                test.append("\"id\":" + PodKategorije.get(j).getId() + ",");
-                test.append("\"naziv\":\"" +PodKategorije.get(j).getNaziv() + "\"");
-                List<Kategorije> podpodKat = getEntityManager().createNamedQuery("Kategorije.AllPodPodKatsForPodKat").setParameter("idPodKat", PodKategorije.get(j).getId()).getResultList();
-                if(podpodKat.size()!= 0){
-                    test.append(",child:\n");
+
+        for (int i = 0; i < kategorije.size(); i++) {
+            KategorijeJSON trenutnaKategorija = new KategorijeJSON();
+            trenutnaKategorija.setNaziv(kategorije.get(i).getNaziv());
+            trenutnaKategorija.setId(kategorije.get(i).getId());
+            List<Kategorije> podKategorije = getEntityManager().createNamedQuery("Kategorije.AllPodKatsForKat").setParameter("idKat", kategorije.get(i).getId()).getResultList();
+            List<KategorijeJSON> podKats = new ArrayList<KategorijeJSON>();
+            for (int j = 0; j < podKategorije.size(); j++) {
+                KategorijeJSON trenutnaPodKategorija = new KategorijeJSON();
+                trenutnaPodKategorija.setId(podKategorije.get(j).getId());
+                trenutnaPodKategorija.setNaziv(podKategorije.get(j).getNaziv());
+                List<Kategorije> podPodKategorije = getEntityManager().createNamedQuery("Kategorije.AllPodPodKatsForPodKat").setParameter("idPodKat", podKategorije.get(j).getId()).getResultList();
+                List<KategorijeJSON> podPodKats = new ArrayList<KategorijeJSON>();
+
+                for (int n = 0; n < podPodKategorije.size(); n++) {
+                    KategorijeJSON trenutnaPodpodKategorija = new KategorijeJSON();
+                    trenutnaPodpodKategorija.setId(podPodKategorije.get(n).getId());
+                    trenutnaPodpodKategorija.setNaziv(podPodKategorije.get(n).getNaziv());
+                    podPodKats.add(trenutnaPodpodKategorija);
                 }
-                for(int n=0;n<podpodKat.size();n++){
-                    if(n==0) test.append("      {"); else test.append("{");
-                    test.append("\"id\":" + podpodKat.get(n).getId() + ",");
-                    test.append("\"naziv\":\"" +podpodKat.get(n).getNaziv() + "\"}");
-                    if(n!=podpodKat.size()-1) test.append(","); else test.append("\n");
+
+                if (podPodKats.size() > 0) {
+                    trenutnaPodKategorija.setChildren(podPodKats);
                 }
-                
-                if(PodKategorije.size()-1==j) test.append("}\n"); else test.append("},");
+                podKats.add(trenutnaPodKategorija);
             }
-            test.append("}");
-            if(i != kategorije.size() - 1)test.append("},");
-            else test.append("}\n");
+            trenutnaKategorija.setChildren(podKats);
+            kategorijeRet.add(trenutnaKategorija);
         }
-        
+
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-        String json = ow.writeValueAsString(kategorije);
-        
+        String json = ow.writeValueAsString(kategorijeRet);
+
         return json;
-    }
-    
-    @GET
-    @Path("test2")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String Test2() {
-        
-        return "";
     }
 
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }

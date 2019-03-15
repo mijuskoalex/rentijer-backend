@@ -31,6 +31,7 @@ public class ApplicationConfig extends Application {
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(web.service.KategorijeFacadeREST.class);
         resources.add(web.service.KorisniciFacadeREST.class);
+        resources.add(web.service.NewCrossOriginResourceSharingFilter.class);
         resources.add(web.service.OglasFacadeREST.class);
         resources.add(web.service.OglasPoljeFacadeREST.class);
         resources.add(web.service.PoljaFacadeREST.class);
