@@ -5,6 +5,12 @@
  */
 package web.service;
 
+import JSONObjects.LandingJSON;
+import JSONObjects.OglasJSON;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -20,6 +26,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import web.Kategorije;
 import web.Oglas;
 import web.OglasPolje;
 
@@ -76,6 +83,37 @@ public class OglasFacadeREST extends AbstractFacade<Oglas> {
             k.setOglasPoljeCollection(cop);
         }
         return k.getOglasPoljeCollection();
+    }
+
+    @GET
+    @Path("landing")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String GetLandingData() throws JsonProcessingException {
+
+        List<LandingJSON> kategorijeRet = new ArrayList<LandingJSON>();
+
+        List<Kategorije> kategorije = getEntityManager().createNamedQuery("Kategorije.AllKats").getResultList();
+
+        for (int i = 0; i < kategorije.size(); i++) {
+            LandingJSON trenutnaKategorija = new LandingJSON();
+            trenutnaKategorija.setNaziv(kategorije.get(i).getNaziv());
+            trenutnaKategorija.setId(kategorije.get(i).getId());
+            List<Oglas> oglasi = getEntityManager().createNamedQuery("Oglas.findByIdKat").setParameter("id", kategorije.get(i).getId()).getResultList();
+            List<OglasJSON> oglJson = new ArrayList<OglasJSON>();
+            for (int j = 0; j < oglasi.size(); j++) {
+                OglasJSON temp = new OglasJSON(oglasi.get(j));
+                oglJson.add(temp);
+            }
+            System.out.println(oglJson);
+            trenutnaKategorija.setOglasi(oglJson);
+            kategorijeRet.add(trenutnaKategorija);
+        }
+
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String json = ow.writeValueAsString(kategorijeRet);
+        System.out.println(json);
+
+        return json;
     }
 
     @GET
