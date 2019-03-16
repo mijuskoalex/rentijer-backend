@@ -10,6 +10,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.Collection;
+import java.util.Collections;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -65,17 +66,29 @@ public class OglasFacadeREST extends AbstractFacade<Oglas> {
     }
 
     @GET
-    @Override
     @Produces({MediaType.APPLICATION_JSON})
-    public List<Oglas> findAll() {
-        return super.findAll();
+    public Collection<OglasPolje> getAll() {
+        Oglas k = new Oglas();
+        if (getEntityManager().createNamedQuery("Oglas.findAll").getResultList().size() == 0) {
+            k.setOglasPoljeCollection(Collections.EMPTY_LIST);
+        } else {
+            Collection<OglasPolje> cop = getEntityManager().createNamedQuery("Oglas.findAll").getResultList();
+            k.setOglasPoljeCollection(cop);
+        }
+        return k.getOglasPoljeCollection();
     }
 
     @GET
-    @Path("?kategorija={kategorija}")
+    @Path("kategorija/{kategorija}")
     @Produces({MediaType.APPLICATION_JSON})
     public Collection<OglasPolje> findBykat(@PathParam("kategorija") Integer kategorija) {
-        Oglas k = (Oglas) getEntityManager().createNamedQuery("Oglas.findByIdPodPodKat").setParameter("idKat", kategorija).getResultList();
+        Oglas k = new Oglas();
+        if (getEntityManager().createNamedQuery("Oglas.findByIdPodPodKat").setParameter("id", kategorija).getResultList().size() == 0) {
+            k.setOglasPoljeCollection(Collections.EMPTY_LIST);
+        } else {
+            Collection<OglasPolje> cop = getEntityManager().createNamedQuery("Oglas.findByIdPodPodKat").setParameter("id", kategorija).getResultList();
+            k.setOglasPoljeCollection(cop);
+        }
         return k.getOglasPoljeCollection();
     }
 

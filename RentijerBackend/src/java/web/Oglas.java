@@ -35,8 +35,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Oglas.findAll", query = "SELECT o FROM Oglas o"),
     @NamedQuery(name = "Oglas.findById", query = "SELECT o FROM Oglas o WHERE o.id = :id"),
-    @NamedQuery(name = "Oglas.findByIdPodPodKat", query = "SELECT o FROM Oglas o WHERE o.idPodPodKat = :id") //, @NamedQuery(name = "Oglas.findByIdPodPodKatPlusPolja", query = "SELECT o FROM Oglas o join o.idPodPodKat op WHERE o.idPodPodKat = :id")
-    ,
+//    @NamedQuery(name = "Oglas.findByIdKat", query = "SELECT o FROM Oglas o WHERE o.idKat = :id"),
+    @NamedQuery(name = "Oglas.findByIdPodPodKat", query = "SELECT o FROM Oglas o WHERE o.idPodPodKat.idKat = :id OR o.idPodPodKat.id = :id OR o.idPodPodKat.idPodKat = :id"),
+    // @NamedQuery(name = "Oglas.findByIdPodPodKatPlusPolja", query = "SELECT o FROM Oglas o join o.idPodPodKat op WHERE o.idPodPodKat = :id")
     @NamedQuery(name = "Oglas.findByOpis", query = "SELECT o FROM Oglas o WHERE o.opis = :opis")})
 public class Oglas implements Serializable {
 
