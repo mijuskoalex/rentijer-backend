@@ -9,6 +9,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Collection;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -19,13 +20,14 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import web.Oglas;
+import web.OglasPolje;
 
 /**
  *
  * @author WinPC
  */
 @Stateless
-@Path("web.oglas")
+@Path("oglasi")
 public class OglasFacadeREST extends AbstractFacade<Oglas> {
 
     @PersistenceContext(unitName = "RentijerBackendPU")
@@ -70,14 +72,20 @@ public class OglasFacadeREST extends AbstractFacade<Oglas> {
     }
 
     @GET
+    @Path("?kategorija={kategorija}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Collection<OglasPolje> findBykat(@PathParam("kategorija") Integer kategorija) {
+        Oglas k = (Oglas) getEntityManager().createNamedQuery("Oglas.findByIdPodPodKat").setParameter("idKat", kategorija).getResultList();
+        return k.getOglasPoljeCollection();
+    }
+
+    @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_JSON})
     public List<Oglas> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
     }
 
-   
-    
     @GET
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
@@ -89,5 +97,5 @@ public class OglasFacadeREST extends AbstractFacade<Oglas> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }

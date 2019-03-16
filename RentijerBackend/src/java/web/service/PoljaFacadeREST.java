@@ -87,5 +87,5 @@ public class PoljaFacadeREST extends AbstractFacade<Polja> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }

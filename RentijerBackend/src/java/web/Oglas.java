@@ -33,11 +33,11 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "oglas")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Oglas.findAll", query = "SELECT o FROM Oglas o")
-    , @NamedQuery(name = "Oglas.findById", query = "SELECT o FROM Oglas o WHERE o.id = :id")
-    , @NamedQuery(name = "Oglas.findByIdPodPodKat", query = "SELECT o FROM Oglas o WHERE o.idPodPodKat = :id")
-    //, @NamedQuery(name = "Oglas.findByIdPodPodKatPlusPolja", query = "SELECT o FROM Oglas o join o.idPodPodKat op WHERE o.idPodPodKat = :id")
-    , @NamedQuery(name = "Oglas.findByOpis", query = "SELECT o FROM Oglas o WHERE o.opis = :opis")})
+    @NamedQuery(name = "Oglas.findAll", query = "SELECT o FROM Oglas o"),
+    @NamedQuery(name = "Oglas.findById", query = "SELECT o FROM Oglas o WHERE o.id = :id"),
+    @NamedQuery(name = "Oglas.findByIdPodPodKat", query = "SELECT o FROM Oglas o WHERE o.idPodPodKat = :id") //, @NamedQuery(name = "Oglas.findByIdPodPodKatPlusPolja", query = "SELECT o FROM Oglas o join o.idPodPodKat op WHERE o.idPodPodKat = :id")
+    ,
+    @NamedQuery(name = "Oglas.findByOpis", query = "SELECT o FROM Oglas o WHERE o.opis = :opis")})
 public class Oglas implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -137,5 +137,5 @@ public class Oglas implements Serializable {
     public String toString() {
         return "web.Oglas[ id=" + id + " ]";
     }
-    
+
 }

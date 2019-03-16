@@ -11,21 +11,21 @@ import java.util.List;
  *
  * @author StefanBurscher
  */
-public class KategorijeJSON {
+public class LandingJSON {
 
-    private Integer id;
     private String naziv;
-    private List<KategorijeJSON> children;
+    private Integer id;
+    private List<LandingJSON> oglasi;
 
-    public KategorijeJSON(Integer id, String naziv) {
-        this.id = id;
+    public LandingJSON(String naziv, Integer id) {
         this.naziv = naziv;
+        this.id = id;
     }
 
-    public KategorijeJSON(Integer id, String naziv, List<KategorijeJSON> children) {
-        this.id = id;
+    public LandingJSON(String naziv, Integer id, List<LandingJSON> oglasi) {
         this.naziv = naziv;
-        this.children = children;
+        this.id = id;
+        this.oglasi = oglasi;
     }
 
     public String getNaziv() {
@@ -44,20 +44,20 @@ public class KategorijeJSON {
         this.id = id;
     }
 
-    public List<KategorijeJSON> getChildren() {
-        return children;
+    public List<LandingJSON> getOglasi() {
+        return oglasi;
     }
 
-    public void setChildren(List<KategorijeJSON> children) {
-        this.children = children;
+    public void setOglasi(List<LandingJSON> oglasi) {
+        this.oglasi = oglasi;
     }
 
     @Override
     public String toString() {
-        return "KategorijeJSON{" + "id=" + id + ", naziv=" + naziv + ", children=" + children + '}';
+        return "LandingJSON{" + "naziv=" + naziv + ", id=" + id + ", oglasi=" + oglasi + '}';
     }
 
-    public KategorijeJSON() {
+    public LandingJSON() {
     }
 
 }

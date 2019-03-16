@@ -6,6 +6,7 @@
 package web.service;
 
 import JSONObjects.KategorijeJSON;
+import JSONObjects.LandingJSON;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -34,7 +35,7 @@ import web.OglasPolje;
  * @author WinPC
  */
 @Stateless
-@Path("web.kategorije")
+@Path("kategorije")
 public class KategorijeFacadeREST extends AbstractFacade<Kategorije> {
 
     @PersistenceContext(unitName = "RentijerBackendPU")
@@ -72,10 +73,62 @@ public class KategorijeFacadeREST extends AbstractFacade<Kategorije> {
     }
 
     @GET
-    @Override
-    @Produces({MediaType.APPLICATION_JSON})
-    public List<Kategorije> findAll() {
-        return super.findAll();
+    @Produces(MediaType.TEXT_PLAIN)
+    public String GetKategorije() throws JsonProcessingException {
+
+        List<KategorijeJSON> kategorijeRet = new ArrayList<KategorijeJSON>();
+
+        List<Kategorije> kategorije = getEntityManager().createNamedQuery("Kategorije.AllKats").getResultList();
+
+        for (int i = 0; i < kategorije.size(); i++) {
+            KategorijeJSON trenutnaKategorija = new KategorijeJSON(kategorije.get(i).getId(), kategorije.get(i).getNaziv());
+            List<Kategorije> podKategorije = getEntityManager().createNamedQuery("Kategorije.AllPodKatsForKat").setParameter("idKat", kategorije.get(i).getId()).getResultList();
+            List<KategorijeJSON> podKats = new ArrayList<KategorijeJSON>();
+            for (int j = 0; j < podKategorije.size(); j++) {
+                KategorijeJSON trenutnaPodKategorija = new KategorijeJSON(podKategorije.get(j).getId(), podKategorije.get(j).getNaziv());
+                List<Kategorije> podPodKategorije = getEntityManager().createNamedQuery("Kategorije.AllPodPodKatsForPodKat").setParameter("idPodKat", podKategorije.get(j).getId()).getResultList();
+                List<KategorijeJSON> podPodKats = new ArrayList<KategorijeJSON>();
+
+                for (int n = 0; n < podPodKategorije.size(); n++) {
+                    KategorijeJSON trenutnaPodpodKategorija = new KategorijeJSON(podPodKategorije.get(n).getId(), podPodKategorije.get(n).getNaziv());
+                    podPodKats.add(trenutnaPodpodKategorija);
+                }
+
+                if (podPodKats.size() > 0) {
+                    trenutnaPodKategorija.setChildren(podPodKats);
+                }
+                podKats.add(trenutnaPodKategorija);
+            }
+            trenutnaKategorija.setChildren(podKats);
+            kategorijeRet.add(trenutnaKategorija);
+        }
+
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String json = ow.writeValueAsString(kategorijeRet);
+
+        return json;
+    }
+
+    @GET
+    @Path("landing")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String GetLandingData() throws JsonProcessingException {
+
+        List<LandingJSON> kategorijeRet = new ArrayList<LandingJSON>();
+
+        List<Kategorije> kategorije = getEntityManager().createNamedQuery("Kategorije.AllKats").getResultList();
+
+        for (int i = 0; i < kategorije.size(); i++) {
+            LandingJSON trenutnaKategorija = new LandingJSON();
+            trenutnaKategorija.setNaziv(kategorije.get(i).getNaziv());
+            trenutnaKategorija.setId(kategorije.get(i).getId());
+            kategorijeRet.add(trenutnaKategorija);
+        }
+
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String json = ow.writeValueAsString(kategorijeRet);
+
+        return json;
     }
 
     @GET
@@ -130,50 +183,6 @@ public class KategorijeFacadeREST extends AbstractFacade<Kategorije> {
     @Produces(MediaType.TEXT_PLAIN)
     public String countREST() {
         return String.valueOf(super.count());
-    }
-
-    @GET
-    @Path("all")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String Test() throws JsonProcessingException {
-
-        List<KategorijeJSON> kategorijeRet = new ArrayList<KategorijeJSON>();
-
-        List<Kategorije> kategorije = getEntityManager().createNamedQuery("Kategorije.AllKats").getResultList();
-
-        for (int i = 0; i < kategorije.size(); i++) {
-            KategorijeJSON trenutnaKategorija = new KategorijeJSON();
-            trenutnaKategorija.setNaziv(kategorije.get(i).getNaziv());
-            trenutnaKategorija.setId(kategorije.get(i).getId());
-            List<Kategorije> podKategorije = getEntityManager().createNamedQuery("Kategorije.AllPodKatsForKat").setParameter("idKat", kategorije.get(i).getId()).getResultList();
-            List<KategorijeJSON> podKats = new ArrayList<KategorijeJSON>();
-            for (int j = 0; j < podKategorije.size(); j++) {
-                KategorijeJSON trenutnaPodKategorija = new KategorijeJSON();
-                trenutnaPodKategorija.setId(podKategorije.get(j).getId());
-                trenutnaPodKategorija.setNaziv(podKategorije.get(j).getNaziv());
-                List<Kategorije> podPodKategorije = getEntityManager().createNamedQuery("Kategorije.AllPodPodKatsForPodKat").setParameter("idPodKat", podKategorije.get(j).getId()).getResultList();
-                List<KategorijeJSON> podPodKats = new ArrayList<KategorijeJSON>();
-
-                for (int n = 0; n < podPodKategorije.size(); n++) {
-                    KategorijeJSON trenutnaPodpodKategorija = new KategorijeJSON();
-                    trenutnaPodpodKategorija.setId(podPodKategorije.get(n).getId());
-                    trenutnaPodpodKategorija.setNaziv(podPodKategorije.get(n).getNaziv());
-                    podPodKats.add(trenutnaPodpodKategorija);
-                }
-
-                if (podPodKats.size() > 0) {
-                    trenutnaPodKategorija.setChildren(podPodKats);
-                }
-                podKats.add(trenutnaPodKategorija);
-            }
-            trenutnaKategorija.setChildren(podKats);
-            kategorijeRet.add(trenutnaKategorija);
-        }
-
-        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-        String json = ow.writeValueAsString(kategorijeRet);
-
-        return json;
     }
 
     @Override

@@ -33,13 +33,13 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "korisnici")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Korisnici.findAll", query = "SELECT k FROM Korisnici k")
-    , @NamedQuery(name = "Korisnici.findById", query = "SELECT k FROM Korisnici k WHERE k.id = :id")
-    , @NamedQuery(name = "Korisnici.findByIme", query = "SELECT k FROM Korisnici k WHERE k.ime = :ime")
-    , @NamedQuery(name = "Korisnici.findByPrezime", query = "SELECT k FROM Korisnici k WHERE k.prezime = :prezime")
-    , @NamedQuery(name = "Korisnici.findByEmail", query = "SELECT k FROM Korisnici k WHERE k.email = :email")
-    , @NamedQuery(name = "Korisnici.findByBrojTelefona", query = "SELECT k FROM Korisnici k WHERE k.brojTelefona = :brojTelefona")
-    , @NamedQuery(name = "Korisnici.findByLozinka", query = "SELECT k FROM Korisnici k WHERE k.lozinka = :lozinka")})
+    @NamedQuery(name = "Korisnici.findAll", query = "SELECT k FROM Korisnici k"),
+    @NamedQuery(name = "Korisnici.findById", query = "SELECT k FROM Korisnici k WHERE k.id = :id"),
+    @NamedQuery(name = "Korisnici.findByIme", query = "SELECT k FROM Korisnici k WHERE k.ime = :ime"),
+    @NamedQuery(name = "Korisnici.findByPrezime", query = "SELECT k FROM Korisnici k WHERE k.prezime = :prezime"),
+    @NamedQuery(name = "Korisnici.findByEmail", query = "SELECT k FROM Korisnici k WHERE k.email = :email"),
+    @NamedQuery(name = "Korisnici.findByBrojTelefona", query = "SELECT k FROM Korisnici k WHERE k.brojTelefona = :brojTelefona"),
+    @NamedQuery(name = "Korisnici.findByLozinka", query = "SELECT k FROM Korisnici k WHERE k.lozinka = :lozinka")})
 public class Korisnici implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -185,5 +185,5 @@ public class Korisnici implements Serializable {
     public String toString() {
         return "web.Korisnici[ id=" + id + " ]";
     }
-    
+
 }

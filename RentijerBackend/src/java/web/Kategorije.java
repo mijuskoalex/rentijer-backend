@@ -32,14 +32,14 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "kategorije")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Kategorije.findAll", query = "SELECT k FROM Kategorije k")
-    , @NamedQuery(name = "Kategorije.findById", query = "SELECT k FROM Kategorije k WHERE k.id = :id")
-    , @NamedQuery(name = "Kategorije.AllKats", query = "SELECT k FROM Kategorije k WHERE k.idKat is null and k.idPodKat is null")
-    , @NamedQuery(name = "Kategorije.AllPodKatsForKat", query = "SELECT k FROM Kategorije k WHERE k.idKat = :idKat and k.idPodKat is null")
-    , @NamedQuery(name = "Kategorije.AllPodPodKatsForPodKat", query = "SELECT k FROM Kategorije k WHERE k.idPodKat = :idPodKat")
-    , @NamedQuery(name = "Kategorije.findByIdKat", query = "SELECT k FROM Kategorije k WHERE k.idKat = :idKat")
-    , @NamedQuery(name = "Kategorije.findByIdPodKat", query = "SELECT k FROM Kategorije k WHERE k.idPodKat = :idPodKat")
-    , @NamedQuery(name = "Kategorije.findByNaziv", query = "SELECT k FROM Kategorije k WHERE k.naziv = :naziv")})
+    @NamedQuery(name = "Kategorije.findAll", query = "SELECT k FROM Kategorije k"),
+    @NamedQuery(name = "Kategorije.findById", query = "SELECT k FROM Kategorije k WHERE k.id = :id"),
+    @NamedQuery(name = "Kategorije.AllKats", query = "SELECT k FROM Kategorije k WHERE k.idKat is null and k.idPodKat is null"),
+    @NamedQuery(name = "Kategorije.AllPodKatsForKat", query = "SELECT k FROM Kategorije k WHERE k.idKat = :idKat and k.idPodKat is null"),
+    @NamedQuery(name = "Kategorije.AllPodPodKatsForPodKat", query = "SELECT k FROM Kategorije k WHERE k.idPodKat = :idPodKat"),
+    @NamedQuery(name = "Kategorije.findByIdKat", query = "SELECT k FROM Kategorije k WHERE k.idKat = :idKat"),
+    @NamedQuery(name = "Kategorije.findByIdPodKat", query = "SELECT k FROM Kategorije k WHERE k.idPodKat = :idPodKat"),
+    @NamedQuery(name = "Kategorije.findByNaziv", query = "SELECT k FROM Kategorije k WHERE k.naziv = :naziv")})
 public class Kategorije implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -137,5 +137,5 @@ public class Kategorije implements Serializable {
     public String toString() {
         return "web.Kategorije[ id=" + id + " ]";
     }
-    
+
 }

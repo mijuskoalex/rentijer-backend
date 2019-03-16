@@ -66,11 +66,11 @@ public abstract class AbstractFacade<T> {
         javax.persistence.Query q = getEntityManager().createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
     }
-    
+
     public List<Oglas> findByKat(int id) {
-        Kategorije k = (Kategorije)getEntityManager().createNamedQuery("Kategorije.findById").setParameter("id", id).getSingleResult();
+        Kategorije k = (Kategorije) getEntityManager().createNamedQuery("Kategorije.findById").setParameter("id", id).getSingleResult();
         List<Oglas> oglasi = getEntityManager().createNamedQuery("Oglas.findByIdPodPodKat").setParameter("id", k).getResultList();
         return oglasi;
     }
-    
+
 }

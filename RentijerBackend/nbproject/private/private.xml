@@ -3,13 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Zlatic/Desktop/RentijerBE/rentijer-backend/RentijerBackend/src/java/web/service/ApplicationConfig.java</file>
-            <file>file:/C:/Users/Zlatic/Desktop/RentijerBE/rentijer-backend/RentijerBackend/src/java/web/service/AbstractFacade.java</file>
-            <file>file:/C:/Users/Zlatic/Desktop/RentijerBE/rentijer-backend/RentijerBackend/src/java/web/service/KategorijeFacadeREST.java</file>
-            <file>file:/C:/Users/Zlatic/Desktop/RentijerBE/rentijer-backend/RentijerBackend/web/index.html</file>
-            <file>file:/C:/Users/Zlatic/Desktop/RentijerBE/rentijer-backend/RentijerBackend/src/conf/MANIFEST.MF</file>
-            <file>file:/C:/Users/Zlatic/Desktop/RentijerBE/rentijer-backend/RentijerBackend/src/java/web/Polja.java</file>
-            <file>file:/C:/Users/Zlatic/Desktop/RentijerBE/rentijer-backend/RentijerBackend/src/java/web/Kategorije.java</file>
+            <file>file:/C:/Users/StefanBurscher/Desktop/rentijer-backend/RentijerBackend/nbproject/build-impl.xml</file>
+            <file>file:/C:/Users/StefanBurscher/Desktop/rentijer-backend/RentijerBackend/nbproject/project.properties</file>
+            <file>file:/C:/Users/StefanBurscher/Desktop/rentijer-backend/RentijerBackend/src/java/web/service/KategorijeFacadeREST.java</file>
+            <file>file:/C:/Users/StefanBurscher/Desktop/rentijer-backend/RentijerBackend/src/java/JSONObjects/KategorijeJSON.java</file>
+            <file>file:/C:/Users/StefanBurscher/Desktop/rentijer-backend/RentijerBackend/src/conf/persistence.xml</file>
         </group>
     </open-files>
 </project-private>

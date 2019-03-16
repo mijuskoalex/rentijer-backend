@@ -8,7 +8,7 @@ import web.Kategorije;
 import web.Korisnici;
 import web.OglasPolje;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2019-03-16T00:17:58")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2019-03-16T14:43:11")
 @StaticMetamodel(Oglas.class)
 public class Oglas_ { 
 

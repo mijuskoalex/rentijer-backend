@@ -87,5 +87,5 @@ public class TipKorisnikaFacadeREST extends AbstractFacade<TipKorisnika> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }

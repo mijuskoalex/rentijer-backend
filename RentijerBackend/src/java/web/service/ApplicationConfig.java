@@ -12,7 +12,7 @@ import javax.ws.rs.core.Application;
  *
  * @author WinPC
  */
-@javax.ws.rs.ApplicationPath("webresources")
+@javax.ws.rs.ApplicationPath("")
 public class ApplicationConfig extends Application {
 
     @Override
@@ -23,10 +23,9 @@ public class ApplicationConfig extends Application {
     }
 
     /**
-     * Do not modify addRestResourceClasses() method.
-     * It is automatically populated with
-     * all resources defined in the project.
-     * If required, comment out calling this method in getClasses().
+     * Do not modify addRestResourceClasses() method. It is automatically
+     * populated with all resources defined in the project. If required, comment
+     * out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(web.service.KategorijeFacadeREST.class);
@@ -37,5 +36,5 @@ public class ApplicationConfig extends Application {
         resources.add(web.service.PoljaFacadeREST.class);
         resources.add(web.service.TipKorisnikaFacadeREST.class);
     }
-    
+
 }

@@ -29,9 +29,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "oglas_polje")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "OglasPolje.findAll", query = "SELECT o FROM OglasPolje o")
-    , @NamedQuery(name = "OglasPolje.findById", query = "SELECT o FROM OglasPolje o WHERE o.id = :id")
-    , @NamedQuery(name = "OglasPolje.findByVrednost", query = "SELECT o FROM OglasPolje o WHERE o.vrednost = :vrednost")})
+    @NamedQuery(name = "OglasPolje.findAll", query = "SELECT o FROM OglasPolje o"),
+    @NamedQuery(name = "OglasPolje.findById", query = "SELECT o FROM OglasPolje o WHERE o.id = :id"),
+    @NamedQuery(name = "OglasPolje.findByVrednost", query = "SELECT o FROM OglasPolje o WHERE o.vrednost = :vrednost")})
 public class OglasPolje implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -120,5 +120,5 @@ public class OglasPolje implements Serializable {
     public String toString() {
         return "web.OglasPolje[ id=" + id + " ]";
     }
-    
+
 }
