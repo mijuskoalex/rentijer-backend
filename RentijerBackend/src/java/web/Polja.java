@@ -109,7 +109,7 @@ public class Polja implements Serializable {
 
     @Override
     public String toString() {
-        return "web.Polja[ id=" + id + " ]";
+        return "Polja{" + "id=" + id + ", naziv=" + naziv + ", oglasPoljeCollection=" + oglasPoljeCollection + '}';
     }
 
 }

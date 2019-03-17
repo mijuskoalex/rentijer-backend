@@ -5,6 +5,7 @@
  */
 package web.service;
 
+import JSONObjects.KategorijeJSON;
 import JSONObjects.LandingJSON;
 import JSONObjects.OglasJSON;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -17,6 +18,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Objects;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -68,8 +70,25 @@ public class OglasFacadeREST extends AbstractFacade<Oglas> {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Oglas find(@PathParam("id") Integer id) {
-        return super.find(id);
+    public String findById(@PathParam("id") Integer id) throws JsonProcessingException {
+        Oglas ogl = super.find(id);
+        Kategorije kategorija = ogl.getIdPodPodKat();
+        List<KategorijeJSON> sveKategorije = new ArrayList<KategorijeJSON>();
+        Kategorije kat = (Kategorije) getEntityManager().createNamedQuery("Kategorije.findById").setParameter("id", kategorija.getIdKat()).getSingleResult();
+        sveKategorije.add(new KategorijeJSON(kat));
+        if (!Objects.isNull(kategorija.getIdPodKat())) {
+            Kategorije podKat = (Kategorije) getEntityManager().createNamedQuery("Kategorije.findById").setParameter("id", kategorija.getIdPodKat()).getSingleResult();
+            sveKategorije.add(new KategorijeJSON(podKat));
+        }
+        Kategorije podpodKat = (Kategorije) getEntityManager().createNamedQuery("Kategorije.findById").setParameter("id", kategorija.getId()).getSingleResult();
+        sveKategorije.add(new KategorijeJSON(podpodKat));
+        OglasJSON oglas = new OglasJSON(ogl);
+        oglas.setKategorije(sveKategorije);
+
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String json = ow.writeValueAsString(oglas);
+
+        return json;
     }
 
     @GET
@@ -104,14 +123,12 @@ public class OglasFacadeREST extends AbstractFacade<Oglas> {
                 OglasJSON temp = new OglasJSON(oglasi.get(j));
                 oglJson.add(temp);
             }
-            System.out.println(oglJson);
             trenutnaKategorija.setOglasi(oglJson);
             kategorijeRet.add(trenutnaKategorija);
         }
 
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
         String json = ow.writeValueAsString(kategorijeRet);
-        System.out.println(json);
 
         return json;
     }

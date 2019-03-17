@@ -135,7 +135,7 @@ public class Kategorije implements Serializable {
 
     @Override
     public String toString() {
-        return "web.Kategorije[ id=" + id + " ]";
+        return "Kategorije{" + "id=" + id + ", idKat=" + idKat + ", idPodKat=" + idPodKat + ", naziv=" + naziv + ", oglasCollection=" + oglasCollection + '}';
     }
 
 }

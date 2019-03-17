@@ -6,7 +6,7 @@ import javax.persistence.metamodel.StaticMetamodel;
 import web.Oglas;
 import web.Polja;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2019-03-16T14:43:11")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2019-03-17T01:15:24")
 @StaticMetamodel(OglasPolje.class)
 public class OglasPolje_ { 
 

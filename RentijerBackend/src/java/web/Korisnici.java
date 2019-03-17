@@ -183,7 +183,7 @@ public class Korisnici implements Serializable {
 
     @Override
     public String toString() {
-        return "web.Korisnici[ id=" + id + " ]";
+        return "Korisnici{" + "id=" + id + ", ime=" + ime + ", prezime=" + prezime + ", email=" + email + ", brojTelefona=" + brojTelefona + ", lozinka=" + lozinka + ", idTip=" + idTip + ", oglasCollection=" + oglasCollection + '}';
     }
 
 }
