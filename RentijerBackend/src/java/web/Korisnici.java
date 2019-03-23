@@ -172,7 +172,7 @@ public class Korisnici implements Serializable {
 
     @Override
     public String toString() {
-        return "Korisnici{" + "id=" + id + ", ime=" + ime + ", prezime=" + prezime + ", email=" + email + ", brojTelefona=" + brojTelefona + ", lozinka=" + lozinka + ", idTip=" + idTip + ", oglasCollection=" + oglasCollection + '}';
+        return "Korisnici{" + "id=" + id + ", ime=" + ime + ", prezime=" + prezime + ", email=" + email + ", lozinka=" + lozinka + ", idTip=" + idTip + ", oglasCollection=" + oglasCollection + '}';
     }
 
 }

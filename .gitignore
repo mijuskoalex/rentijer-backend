@@ -1,3 +1,8 @@
-RentijerBackend/web/WEB-INF/glassfish-resources.xml
+RentijerBackend/nbproject/private/
+RentijerBackend/nbproject/Makefile-*.mk
+RentijerBackend/nbproject/Package-*.bash
 RentijerBackend/build/
+RentijerBackend/nbbuild/
 RentijerBackend/dist/
+RentijerBackend/nbdist/
+RentijerBackend/.nb-gradle/
