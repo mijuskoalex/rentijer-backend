@@ -16,6 +16,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -37,9 +39,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Korisnici.findById", query = "SELECT k FROM Korisnici k WHERE k.id = :id"),
     @NamedQuery(name = "Korisnici.findByIme", query = "SELECT k FROM Korisnici k WHERE k.ime = :ime"),
     @NamedQuery(name = "Korisnici.findByPrezime", query = "SELECT k FROM Korisnici k WHERE k.prezime = :prezime"),
+    @NamedQuery(name = "Korisnici.login", query = "SELECT k FROM Korisnici k WHERE k.email = :email AND k.lozinka = :lozinka"),
     @NamedQuery(name = "Korisnici.findByEmail", query = "SELECT k FROM Korisnici k WHERE k.email = :email"),
-    @NamedQuery(name = "Korisnici.findByBrojTelefona", query = "SELECT k FROM Korisnici k WHERE k.brojTelefona = :brojTelefona"),
     @NamedQuery(name = "Korisnici.findByLozinka", query = "SELECT k FROM Korisnici k WHERE k.lozinka = :lozinka")})
+
 public class Korisnici implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -67,11 +70,6 @@ public class Korisnici implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "brojTelefona")
-    private String brojTelefona;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
     @Column(name = "lozinka")
     private String lozinka;
     @JoinColumn(name = "idTip", referencedColumnName = "id")
@@ -87,12 +85,11 @@ public class Korisnici implements Serializable {
         this.id = id;
     }
 
-    public Korisnici(Integer id, String ime, String prezime, String email, String brojTelefona, String lozinka) {
+    public Korisnici(Integer id, String ime, String prezime, String email, String lozinka) {
         this.id = id;
         this.ime = ime;
         this.prezime = prezime;
         this.email = email;
-        this.brojTelefona = brojTelefona;
         this.lozinka = lozinka;
     }
 
@@ -126,14 +123,6 @@ public class Korisnici implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getBrojTelefona() {
-        return brojTelefona;
-    }
-
-    public void setBrojTelefona(String brojTelefona) {
-        this.brojTelefona = brojTelefona;
     }
 
     public String getLozinka() {

@@ -75,7 +75,7 @@ public class KorisniciFacadeREST extends AbstractFacade<Korisnici> {
     public List<Korisnici> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
     }
-
+    
     @GET
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
@@ -87,5 +87,22 @@ public class KorisniciFacadeREST extends AbstractFacade<Korisnici> {
     protected EntityManager getEntityManager() {
         return em;
     }
-
+    @GET
+    @Path("login/{email}/{lozinka}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String login(@PathParam("email") String email, @PathParam("lozinka") String lozinka) throws Exception{
+         return super.login(email, lozinka);
+    }
+    @GET
+    @Path("register/{email}/{ime}/{prezime}/{lozinka}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String register(@PathParam("email") String email, @PathParam("ime") String ime, @PathParam("prezime") String prezime, @PathParam("lozinka") String lozinka){
+        Korisnici k = new Korisnici();
+        k.setIme(ime);
+        k.setPrezime(prezime);
+        k.setEmail(email);
+        k.setLozinka(lozinka);
+        
+        return super.register(ime, prezime, email, lozinka);
+    }
 }

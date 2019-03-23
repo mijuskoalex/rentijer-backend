@@ -5,14 +5,23 @@
  */
 package web.service;
 
+
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import java.sql.PreparedStatement;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.Root;
 import web.Kategorije;
+import web.Korisnici;
 import web.Oglas;
 import web.OglasPolje;
-import web.Oglas_;
+import web.TipKorisnika;
+
 
 /**
  *
@@ -71,6 +80,37 @@ public abstract class AbstractFacade<T> {
         Kategorije k = (Kategorije) getEntityManager().createNamedQuery("Kategorije.findById").setParameter("id", id).getSingleResult();
         List<Oglas> oglasi = getEntityManager().createNamedQuery("Oglas.findByIdPodPodKat").setParameter("id", k).getResultList();
         return oglasi;
+    }
+    public String login(String email, String lozinka) throws Exception{
+        Korisnici korisnik = (Korisnici) getEntityManager().createNamedQuery("Korisnici.login").setParameter("email", email).setParameter("lozinka", lozinka).getSingleResult(); 
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("email", email);
+        claims.put("lozinka", lozinka);
+        String jwtString = null;
+        if(korisnik != null){
+            try{
+                jwtString = Jwts.builder().setClaims(claims).signWith(SignatureAlgorithm.HS512, "secret".getBytes("UTF-8")).setIssuedAt(new Date()).compact();
+               
+            }catch(Exception e){
+                 e.printStackTrace();
+                 throw new Exception("Fail to create JWT");
+            }
+        }
+        return jwtString;
+    }
+    public String register(String ime, String prezime, String email, String lozinka){
+        TipKorisnika tip = (TipKorisnika) getEntityManager().createNamedQuery("TipKorisnika.findById").setParameter("id", 1).getSingleResult();
+        
+        getEntityManager().createNativeQuery("INSERT INTO Korisnici (ime, prezime, email, lozinka, idTip) values (?, ?, ?, ?, ?)").setParameter(1, ime)
+                                                                             .setParameter(2, prezime)
+                                                                             .setParameter(3, email)
+                                                                             .setParameter(4, lozinka)
+                                                                             .setParameter(5, tip.getId())
+                                                                             .executeUpdate();
+        Korisnici k = (Korisnici)getEntityManager().createNamedQuery("Korisnici.findByEmail").setParameter("email", email).getSingleResult();
+        getEntityManager().persist(k);
+        getEntityManager().flush();
+        return "";
     }
 
 }
