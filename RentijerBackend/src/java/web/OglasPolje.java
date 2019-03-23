@@ -118,7 +118,7 @@ public class OglasPolje implements Serializable {
 
     @Override
     public String toString() {
-        return "web.OglasPolje[ id=" + id + " ]";
+        return "OglasPolje{" + "id=" + id + ", vrednost=" + vrednost + ", idOglas=" + idOglas + ", idPolje=" + idPolje + '}';
     }
 
 }

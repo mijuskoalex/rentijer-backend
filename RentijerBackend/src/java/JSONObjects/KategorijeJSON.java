@@ -6,6 +6,7 @@
 package JSONObjects;
 
 import java.util.List;
+import web.Kategorije;
 
 /**
  *
@@ -16,6 +17,11 @@ public class KategorijeJSON {
     private Integer id;
     private String naziv;
     private List<KategorijeJSON> children;
+
+    public KategorijeJSON(Kategorije kat) {
+        this.id = kat.getId();
+        this.naziv = kat.getNaziv();
+    }
 
     public KategorijeJSON(Integer id, String naziv) {
         this.id = id;

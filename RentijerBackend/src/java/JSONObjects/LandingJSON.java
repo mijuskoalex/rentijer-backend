@@ -15,14 +15,14 @@ public class LandingJSON {
 
     private String naziv;
     private Integer id;
-    private List<LandingJSON> oglasi;
+    private List<OglasJSON> oglasi;
 
     public LandingJSON(String naziv, Integer id) {
         this.naziv = naziv;
         this.id = id;
     }
 
-    public LandingJSON(String naziv, Integer id, List<LandingJSON> oglasi) {
+    public LandingJSON(String naziv, Integer id, List<OglasJSON> oglasi) {
         this.naziv = naziv;
         this.id = id;
         this.oglasi = oglasi;
@@ -44,11 +44,11 @@ public class LandingJSON {
         this.id = id;
     }
 
-    public List<LandingJSON> getOglasi() {
+    public List<OglasJSON> getOglasi() {
         return oglasi;
     }
 
-    public void setOglasi(List<LandingJSON> oglasi) {
+    public void setOglasi(List<OglasJSON> oglasi) {
         this.oglasi = oglasi;
     }
 

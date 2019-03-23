@@ -109,7 +109,7 @@ public class TipKorisnika implements Serializable {
 
     @Override
     public String toString() {
-        return "web.TipKorisnika[ id=" + id + " ]";
+        return "TipKorisnika{" + "id=" + id + ", vrsta=" + vrsta + ", korisniciCollection=" + korisniciCollection + '}';
     }
 
 }

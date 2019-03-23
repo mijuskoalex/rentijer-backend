@@ -7,7 +7,11 @@ import javax.persistence.metamodel.StaticMetamodel;
 import web.Oglas;
 import web.TipKorisnika;
 
+<<<<<<< HEAD
 @Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2019-03-23T00:35:41")
+=======
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2019-03-17T01:15:24")
+>>>>>>> 2c05f27ce9bba18f318a41f4082b1b5735c9530f
 @StaticMetamodel(Korisnici.class)
 public class Korisnici_ { 
 

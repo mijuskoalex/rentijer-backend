@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -100,28 +101,6 @@ public class KategorijeFacadeREST extends AbstractFacade<Kategorije> {
                 podKats.add(trenutnaPodKategorija);
             }
             trenutnaKategorija.setChildren(podKats);
-            kategorijeRet.add(trenutnaKategorija);
-        }
-
-        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-        String json = ow.writeValueAsString(kategorijeRet);
-
-        return json;
-    }
-
-    @GET
-    @Path("landing")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String GetLandingData() throws JsonProcessingException {
-
-        List<LandingJSON> kategorijeRet = new ArrayList<LandingJSON>();
-
-        List<Kategorije> kategorije = getEntityManager().createNamedQuery("Kategorije.AllKats").getResultList();
-
-        for (int i = 0; i < kategorije.size(); i++) {
-            LandingJSON trenutnaKategorija = new LandingJSON();
-            trenutnaKategorija.setNaziv(kategorije.get(i).getNaziv());
-            trenutnaKategorija.setId(kategorije.get(i).getId());
             kategorijeRet.add(trenutnaKategorija);
         }
 

@@ -5,11 +5,20 @@
  */
 package web.service;
 
+import JSONObjects.KategorijeJSON;
+import JSONObjects.LandingJSON;
+import JSONObjects.OglasJSON;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Objects;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -19,6 +28,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import web.Kategorije;
 import web.Oglas;
 import web.OglasPolje;
 
@@ -60,22 +70,80 @@ public class OglasFacadeREST extends AbstractFacade<Oglas> {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Oglas find(@PathParam("id") Integer id) {
-        return super.find(id);
+    public String findById(@PathParam("id") Integer id) throws JsonProcessingException {
+        Oglas ogl = super.find(id);
+        Kategorije kategorija = ogl.getIdPodPodKat();
+        List<KategorijeJSON> sveKategorije = new ArrayList<KategorijeJSON>();
+        Kategorije kat = (Kategorije) getEntityManager().createNamedQuery("Kategorije.findById").setParameter("id", kategorija.getIdKat()).getSingleResult();
+        sveKategorije.add(new KategorijeJSON(kat));
+        if (!Objects.isNull(kategorija.getIdPodKat())) {
+            Kategorije podKat = (Kategorije) getEntityManager().createNamedQuery("Kategorije.findById").setParameter("id", kategorija.getIdPodKat()).getSingleResult();
+            sveKategorije.add(new KategorijeJSON(podKat));
+        }
+        Kategorije podpodKat = (Kategorije) getEntityManager().createNamedQuery("Kategorije.findById").setParameter("id", kategorija.getId()).getSingleResult();
+        sveKategorije.add(new KategorijeJSON(podpodKat));
+        OglasJSON oglas = new OglasJSON(ogl);
+        oglas.setKategorije(sveKategorije);
+
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String json = ow.writeValueAsString(oglas);
+
+        return json;
     }
 
     @GET
-    @Override
     @Produces({MediaType.APPLICATION_JSON})
-    public List<Oglas> findAll() {
-        return super.findAll();
+    public Collection<OglasPolje> getAll() {
+        Oglas k = new Oglas();
+        if (getEntityManager().createNamedQuery("Oglas.findAll").getResultList().size() == 0) {
+            k.setOglasPoljeCollection(Collections.EMPTY_LIST);
+        } else {
+            Collection<OglasPolje> cop = getEntityManager().createNamedQuery("Oglas.findAll").getResultList();
+            k.setOglasPoljeCollection(cop);
+        }
+        return k.getOglasPoljeCollection();
     }
 
     @GET
-    @Path("?kategorija={kategorija}")
+    @Path("landing")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String GetLandingData() throws JsonProcessingException {
+
+        List<LandingJSON> kategorijeRet = new ArrayList<LandingJSON>();
+
+        List<Kategorije> kategorije = getEntityManager().createNamedQuery("Kategorije.AllKats").getResultList();
+
+        for (int i = 0; i < kategorije.size(); i++) {
+            LandingJSON trenutnaKategorija = new LandingJSON();
+            trenutnaKategorija.setNaziv(kategorije.get(i).getNaziv());
+            trenutnaKategorija.setId(kategorije.get(i).getId());
+            List<Oglas> oglasi = getEntityManager().createNamedQuery("Oglas.findByIdKat").setParameter("id", kategorije.get(i).getId()).getResultList();
+            List<OglasJSON> oglJson = new ArrayList<OglasJSON>();
+            for (int j = 0; j < oglasi.size(); j++) {
+                OglasJSON temp = new OglasJSON(oglasi.get(j));
+                oglJson.add(temp);
+            }
+            trenutnaKategorija.setOglasi(oglJson);
+            kategorijeRet.add(trenutnaKategorija);
+        }
+
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String json = ow.writeValueAsString(kategorijeRet);
+
+        return json;
+    }
+
+    @GET
+    @Path("kategorija/{kategorija}")
     @Produces({MediaType.APPLICATION_JSON})
     public Collection<OglasPolje> findBykat(@PathParam("kategorija") Integer kategorija) {
-        Oglas k = (Oglas) getEntityManager().createNamedQuery("Oglas.findByIdPodPodKat").setParameter("idKat", kategorija).getResultList();
+        Oglas k = new Oglas();
+        if (getEntityManager().createNamedQuery("Oglas.findByIdPodPodKat").setParameter("id", kategorija).getResultList().size() == 0) {
+            k.setOglasPoljeCollection(Collections.EMPTY_LIST);
+        } else {
+            Collection<OglasPolje> cop = getEntityManager().createNamedQuery("Oglas.findByIdPodPodKat").setParameter("id", kategorija).getResultList();
+            k.setOglasPoljeCollection(cop);
+        }
         return k.getOglasPoljeCollection();
     }
 
