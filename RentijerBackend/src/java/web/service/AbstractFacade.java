@@ -6,6 +6,7 @@
 package web.service;
 
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.sql.PreparedStatement;
@@ -83,9 +84,9 @@ public abstract class AbstractFacade<T> {
     }
     public String login(String email, String lozinka) throws Exception{
         Korisnici korisnik = (Korisnici) getEntityManager().createNamedQuery("Korisnici.login").setParameter("email", email).setParameter("lozinka", lozinka).getSingleResult(); 
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("email", email);
-        claims.put("lozinka", lozinka);
+//        Map<String, Object> claims = new HashMap<>();
+        Claims claims = Jwts.claims().setSubject(korisnik.getEmail());
+        claims.put("id", korisnik.getId());
         String jwtString = null;
         if(korisnik != null){
             try{
@@ -95,6 +96,8 @@ public abstract class AbstractFacade<T> {
                  e.printStackTrace();
                  throw new Exception("Fail to create JWT");
             }
+        }else{
+            return "";
         }
         return jwtString;
     }
