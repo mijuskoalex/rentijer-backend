@@ -45,6 +45,15 @@ import javax.xml.bind.annotation.XmlTransient;
 
 public class Korisnici implements Serializable {
 
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "brojTelefona")
+    private String brojTelefona;
+    @Size(max = 45)
+    @Column(name = "slika")
+    private String slika;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -173,6 +182,22 @@ public class Korisnici implements Serializable {
     @Override
     public String toString() {
         return "Korisnici{" + "id=" + id + ", ime=" + ime + ", prezime=" + prezime + ", email=" + email + ", lozinka=" + lozinka + ", idTip=" + idTip + ", oglasCollection=" + oglasCollection + '}';
+    }
+
+    public String getBrojTelefona() {
+        return brojTelefona;
+    }
+
+    public void setBrojTelefona(String brojTelefona) {
+        this.brojTelefona = brojTelefona;
+    }
+
+    public String getSlika() {
+        return slika;
+    }
+
+    public void setSlika(String slika) {
+        this.slika = slika;
     }
 
 }

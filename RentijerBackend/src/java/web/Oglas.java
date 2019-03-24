@@ -41,6 +41,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Oglas.findByOpis", query = "SELECT o FROM Oglas o WHERE o.opis = :opis")})
 public class Oglas implements Serializable {
 
+    @OneToMany(mappedBy = "idOglas")
+    private Collection<Slike> slikeCollection;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -137,6 +140,15 @@ public class Oglas implements Serializable {
     @Override
     public String toString() {
         return "Oglas{" + "id=" + id + ", opis=" + opis + ", oglasPoljeCollection=" + oglasPoljeCollection + ", idKorisnik=" + idKorisnik + ", idPodPodKat=" + idPodPodKat + '}';
+    }
+
+    @XmlTransient
+    public Collection<Slike> getSlikeCollection() {
+        return slikeCollection;
+    }
+
+    public void setSlikeCollection(Collection<Slike> slikeCollection) {
+        this.slikeCollection = slikeCollection;
     }
 
 }
